@@ -19,6 +19,17 @@ final class RMCharacterCollectionViewCell: UICollectionViewCell {
         required init?(coder: NSCoder) {
             fatalError("Unsupported")
         }
+    
+        private func addConstraints() {
+        
+        }
+    
+        override func prepareForReuse() {
+            super.prepareForReuse()
+       }
+    
+      public func configure(with viewModel: RMCharacterCollectionViewCellViewModel) {
         
     }
+}
 

@@ -31,6 +31,7 @@
 		D7D7A4C42A8FDD4C00ECB119 /* RMCharacterListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D7A4C32A8FDD4C00ECB119 /* RMCharacterListView.swift */; };
 		D7D7A4C62A8FE84400ECB119 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D7A4C52A8FE84400ECB119 /* Extensions.swift */; };
 		D7D7A4C82A907C0500ECB119 /* RMCharacterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D7A4C72A907C0500ECB119 /* RMCharacterCollectionViewCell.swift */; };
+		D7D7A4CA2A918EA700ECB119 /* RMCharacterCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D7A4C92A918EA700ECB119 /* RMCharacterCollectionViewCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		D7D7A4C32A8FDD4C00ECB119 /* RMCharacterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterListView.swift; sourceTree = "<group>"; };
 		D7D7A4C52A8FE84400ECB119 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D7D7A4C72A907C0500ECB119 /* RMCharacterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterCollectionViewCell.swift; sourceTree = "<group>"; };
+		D7D7A4C92A918EA700ECB119 /* RMCharacterCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				D7D7A4C12A8E912A00ECB119 /* RMCharacterListViewViewModel.swift */,
+				D7D7A4C92A918EA700ECB119 /* RMCharacterCollectionViewCellViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				D7D7A4A12A831DCC00ECB119 /* RMLocation.swift in Sources */,
 				D7D7A4B42A86144900ECB119 /* RMEndpoint.swift in Sources */,
 				D7D7A4A32A831DE700ECB119 /* RMCharacter.swift in Sources */,
+				D7D7A4CA2A918EA700ECB119 /* RMCharacterCollectionViewCellViewModel.swift in Sources */,
 				D7D7A4B22A86100F00ECB119 /* RMRequest.swift in Sources */,
 				D7D7A4C22A8E912A00ECB119 /* RMCharacterListViewViewModel.swift in Sources */,
 				D7D7A4A82A8325D700ECB119 /* RMCharacterViewController.swift in Sources */,
