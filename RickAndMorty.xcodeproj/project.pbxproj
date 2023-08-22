@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D7B6580D2A94DC860073F5D3 /* RMCharacterDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B6580C2A94DC860073F5D3 /* RMCharacterDetailViewController.swift */; };
 		D7D7A4842A8072DC00ECB119 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D7A4832A8072DC00ECB119 /* AppDelegate.swift */; };
 		D7D7A4862A8072DC00ECB119 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D7A4852A8072DC00ECB119 /* SceneDelegate.swift */; };
 		D7D7A4882A8072DC00ECB119 /* RMTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D7A4872A8072DC00ECB119 /* RMTabViewController.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D7B6580C2A94DC860073F5D3 /* RMCharacterDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterDetailViewController.swift; sourceTree = "<group>"; };
 		D7D7A4802A8072DC00ECB119 /* RickAndMorty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMorty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D7A4832A8072DC00ECB119 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D7D7A4852A8072DC00ECB119 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D7B6580B2A94DB870073F5D3 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				D7B6580C2A94DC860073F5D3 /* RMCharacterDetailViewController.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		D7D7A4772A8072DC00ECB119 = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +119,7 @@
 		D7D7A4972A80EBF600ECB119 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D7B6580B2A94DB870073F5D3 /* Other */,
 				D7D7A4A62A83248700ECB119 /* Core */,
 			);
 			path = Controllers;
@@ -280,6 +291,7 @@
 				D7D7A4C02A8D1DB800ECB119 /* RMGetAllCharactersResponse.swift in Sources */,
 				D7D7A4BA2A8AD16700ECB119 /* RMCharacterStatus.swift in Sources */,
 				D7D7A4BC2A8AD1C900ECB119 /* RMCharacterGender.swift in Sources */,
+				D7B6580D2A94DC860073F5D3 /* RMCharacterDetailViewController.swift in Sources */,
 				D7D7A4AA2A83260B00ECB119 /* RMLocationViewController.swift in Sources */,
 				D7D7A4A52A831E0500ECB119 /* RMEpisode.swift in Sources */,
 				D7D7A4882A8072DC00ECB119 /* RMTabViewController.swift in Sources */,
