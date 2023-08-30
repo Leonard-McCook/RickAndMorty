@@ -8,5 +8,5 @@
 import UIKit
 
 class RMCharacterEpisodeCollectionViewCell: UICollectionViewCell {
-    
+    static let cellIdentifier = "RMCharacterEpisodeCollectionViewCell"
 }
