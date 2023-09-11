@@ -22,6 +22,7 @@
 		D723924C2A9EC63200FAC81B /* RMCharacterEpisodeCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D723924B2A9EC63200FAC81B /* RMCharacterEpisodeCollectionViewCellViewModel.swift */; };
 		D72A55862AACE3EF00EE1D2E /* RMSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72A55852AACE3EF00EE1D2E /* RMSearchViewController.swift */; };
 		D72A55892AADBDA700EE1D2E /* RMEpisodeInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72A55882AADBDA700EE1D2E /* RMEpisodeInfoCollectionViewCell.swift */; };
+		D72A558C2AAFB9D200EE1D2E /* RMEpisodeInfoCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72A558B2AAFB9D200EE1D2E /* RMEpisodeInfoCollectionViewCellViewModel.swift */; };
 		D7B6580D2A94DC860073F5D3 /* RMCharacterDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B6580C2A94DC860073F5D3 /* RMCharacterDetailViewController.swift */; };
 		D7B6580F2A9689AB0073F5D3 /* RMCharacterDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B6580E2A9689AB0073F5D3 /* RMCharacterDetailView.swift */; };
 		D7B658112A968C300073F5D3 /* RMCharacterDetailViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7B658102A968C300073F5D3 /* RMCharacterDetailViewViewModel.swift */; };
@@ -70,6 +71,7 @@
 		D723924B2A9EC63200FAC81B /* RMCharacterEpisodeCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterEpisodeCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		D72A55852AACE3EF00EE1D2E /* RMSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSearchViewController.swift; sourceTree = "<group>"; };
 		D72A55882AADBDA700EE1D2E /* RMEpisodeInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMEpisodeInfoCollectionViewCell.swift; sourceTree = "<group>"; };
+		D72A558B2AAFB9D200EE1D2E /* RMEpisodeInfoCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMEpisodeInfoCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
 		D7B6580C2A94DC860073F5D3 /* RMCharacterDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterDetailViewController.swift; sourceTree = "<group>"; };
 		D7B6580E2A9689AB0073F5D3 /* RMCharacterDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterDetailView.swift; sourceTree = "<group>"; };
 		D7B658102A968C300073F5D3 /* RMCharacterDetailViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterDetailViewViewModel.swift; sourceTree = "<group>"; };
@@ -163,6 +165,15 @@
 			path = EpisodeDetails;
 			sourceTree = "<group>";
 		};
+		D72A558A2AAFB8DF00EE1D2E /* EpisodeDetail */ = {
+			isa = PBXGroup;
+			children = (
+				D71E6BF82AA7AACD000362EA /* RMEpisodeDetailViewViewModel.swift */,
+				D72A558B2AAFB9D200EE1D2E /* RMEpisodeInfoCollectionViewCellViewModel.swift */,
+			);
+			path = EpisodeDetail;
+			sourceTree = "<group>";
+		};
 		D7B6580B2A94DB870073F5D3 /* Other */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,10 +248,10 @@
 		D7D7A49A2A80EC3900ECB119 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				D72A558A2AAFB8DF00EE1D2E /* EpisodeDetail */,
 				D72392462A9EC4A500FAC81B /* CharacterDetail */,
 				D7D7A4C12A8E912A00ECB119 /* RMCharacterListViewViewModel.swift */,
 				D7D7A4C92A918EA700ECB119 /* RMCharacterCollectionViewCellViewModel.swift */,
-				D71E6BF82AA7AACD000362EA /* RMEpisodeDetailViewViewModel.swift */,
 				D71E6BFF2AAA558C000362EA /* RMEpisodeListViewViewModel.swift */,
 			);
 			path = ViewModels;
@@ -422,6 +433,7 @@
 				D71E6C002AAA558C000362EA /* RMEpisodeListViewViewModel.swift in Sources */,
 				D71E6BF72AA56793000362EA /* RMAPICacheManager.swift in Sources */,
 				D71E6C022AABBF40000362EA /* RMGetAllEpisodesResponse.swift in Sources */,
+				D72A558C2AAFB9D200EE1D2E /* RMEpisodeInfoCollectionViewCellViewModel.swift in Sources */,
 				D72A55892AADBDA700EE1D2E /* RMEpisodeInfoCollectionViewCell.swift in Sources */,
 				D71E6BF92AA7AACD000362EA /* RMEpisodeDetailViewViewModel.swift in Sources */,
 				D7B6580F2A9689AB0073F5D3 /* RMCharacterDetailView.swift in Sources */,
