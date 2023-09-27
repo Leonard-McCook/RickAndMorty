@@ -7,46 +7,67 @@
 
 import UIKit
 
-/// Controller to show and search for Episodes
-final class RMEpisodeViewController: UIViewController, RMEpisodeListViewDelegate {
+/// VC to show details about single episode
+final class RMEpisodeDetailViewController: UIViewController, RMEpisodeDetailViewViewModelDelegate, RMEpisodeDetailViewDelegate {
+    private let viewModel: RMEpisodeDetailViewViewModel
 
-    private let episodeListView = RMEpisodeListView()
+    private let detailView = RMEpisodeDetailView()
+
+    // MARK: - Init
+
+    init(url: URL?) {
+        self.viewModel = RMEpisodeDetailViewViewModel(endpointUrl: url)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Episodes"
-        setUpView()
-        addSearchButton()
+        view.addSubview(detailView)
+        addConstraints()
+        detailView.delegate = self
+        title = "Episode"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
+
+        viewModel.delegate = self
+        viewModel.fetchEpisodeData()
     }
 
-    private func addSearchButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+    private func addConstraints() {
+        NSLayoutConstraint.activate([
+            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            detailView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            detailView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            detailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
     }
 
-    @objc private func didTapSearch() {
-        let vc = RMSearchViewController(config: .init(type: .episode))
+    @objc
+    private func didTapShare() {
+
+    }
+
+    // MARK: - View Delegate
+
+    func rmEpisodeDetailView(
+        _ detailView: RMEpisodeDetailView,
+        didSelect character: RMCharacter
+    ) {
+        let vc = RMCharacterDetailViewController(viewModel: .init(character: character))
+        vc.title = character.name
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    private func setUpView() {
-        episodeListView.delegate = self
-        view.addSubview(episodeListView)
-        NSLayoutConstraint.activate([
-            episodeListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            episodeListView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            episodeListView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            episodeListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        ])
-    }
+    // MARK: - ViewModel Delegate
 
-    // MARK: - RMEpisodeListViewDelegate
-
-    func rmEpisodeListView(_ characterListView: RMEpisodeListView, didSelectEpisode episode: RMEpisode) {
-        // Open detail controller for that episode
-        let detailVC = RMEpisodeDetailViewController(url: URL(string: episode.url))
-        detailVC.navigationItem.largeTitleDisplayMode = .never
-        navigationController?.pushViewController(detailVC, animated: true)
+    func didFetchEpisodeDetails() {
+        detailView.configure(with: viewModel)
     }
 }
