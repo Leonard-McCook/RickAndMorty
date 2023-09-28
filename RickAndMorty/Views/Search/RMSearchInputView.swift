@@ -7,155 +7,172 @@
 
 import UIKit
 
-protocol RMSearchViewDelegate: AnyObject {
-    func rmSearchView(_ searchView: RMSearchView, didSelectOption option: RMSearchInputViewViewModel.DynamicOption)
-
-    func rmSearchView(_ searchView: RMSearchView, didSelectLocation location: RMLocation)
-    func rmSearchView(_ searchView: RMSearchView, didSelectCharacter character: RMCharacter)
-    func rmSearchView(_ searchView: RMSearchView, didSelectEpisode episode: RMEpisode)
+protocol RMSearchInputViewDelegate: AnyObject {
+    func rmSearchInputView(_ inputView: RMSearchInputView,
+                           didSelectOption option: RMSearchInputViewViewModel.DynamicOption)
+    func rmSearchInputView(_ inputView: RMSearchInputView,
+                           didChangeSearchText text: String)
+    func rmSearchInputViewDidTapSearchKeyboardButton(_ inputView: RMSearchInputView)
 }
 
-final class RMSearchView: UIView {
+/// View for top part of search screen with search bar
+final class RMSearchInputView: UIView {
 
-    weak var delegate: RMSearchViewDelegate?
+    weak var delegate: RMSearchInputViewDelegate?
 
-    private let viewModel: RMSearchViewViewModel
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "Search"
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        return searchBar
+    }()
 
-    // MARK: - Subviews
+    private var viewModel: RMSearchInputViewViewModel? {
+        didSet {
+            guard let viewModel = viewModel, viewModel.hasDynamicOptions else {
+                return
+            }
+            let options = viewModel.options
+            createOptionSelectionViews(options: options)
+        }
+    }
 
-    private let searchInputView = RMSearchInputView()
-
-    private let noResultsView = RMNoSearchResultsView()
-
-    private let resultsView = RMSearchResultsView()
-
-    // Results collectionView
+    private var stackView: UIStackView?
 
     // MARK: - Init
 
-    init(frame: CGRect, viewModel: RMSearchViewViewModel) {
-        self.viewModel = viewModel
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .systemBackground
         translatesAutoresizingMaskIntoConstraints = false
-        addSubviews(resultsView, noResultsView, searchInputView)
+        addSubviews(searchBar)
         addConstraints()
 
-        searchInputView.configure(with: RMSearchInputViewViewModel(type: viewModel.config.type))
-        searchInputView.delegate = self
-
-        setUpHandlers(viewModel: viewModel)
-
-        resultsView.delegate = self
+        searchBar.delegate = self
     }
 
     required init?(coder: NSCoder) {
         fatalError()
     }
 
-    private func setUpHandlers(viewModel: RMSearchViewViewModel) {
-        viewModel.registerOptionChangeBlock { tuple in
-            self.searchInputView.update(option: tuple.0, value: tuple.1)
-        }
-
-        viewModel.registerSearchResultHandler { [weak self] result in
-            DispatchQueue.main.async {
-                self?.resultsView.configure(with: result)
-                self?.noResultsView.isHidden = true
-                self?.resultsView.isHidden = false
-            }
-        }
-
-        viewModel.registerNoResultsHandler { [weak self] in
-            DispatchQueue.main.async {
-                self?.noResultsView.isHidden = false
-                self?.resultsView.isHidden = true
-            }
-        }
-    }
+    // MARK: - Private
 
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            // Search input view
-            searchInputView.topAnchor.constraint(equalTo: topAnchor),
-            searchInputView.leftAnchor.constraint(equalTo: leftAnchor),
-            searchInputView.rightAnchor.constraint(equalTo: rightAnchor),
-            searchInputView.heightAnchor.constraint(equalToConstant: viewModel.config.type == .episode ? 55 : 110),
-
-            resultsView.topAnchor.constraint(equalTo: searchInputView.bottomAnchor),
-            resultsView.leftAnchor.constraint(equalTo: leftAnchor),
-            resultsView.rightAnchor.constraint(equalTo: rightAnchor),
-            resultsView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
-            // No results
-            noResultsView.widthAnchor.constraint(equalToConstant: 150),
-            noResultsView.heightAnchor.constraint(equalToConstant: 150),
-            noResultsView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            noResultsView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            searchBar.topAnchor.constraint(equalTo: topAnchor),
+            searchBar.leftAnchor.constraint(equalTo: leftAnchor),
+            searchBar.rightAnchor.constraint(equalTo: rightAnchor),
+            searchBar.heightAnchor.constraint(equalToConstant: 58)
         ])
     }
 
+    private func createOptionStackView() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 6
+        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+        addSubview(stackView)
+
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            stackView.leftAnchor.constraint(equalTo: leftAnchor),
+            stackView.rightAnchor.constraint(equalTo: rightAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+
+        return stackView
+    }
+
+    private func createOptionSelectionViews(options: [RMSearchInputViewViewModel.DynamicOption]) {
+        let stackView = createOptionStackView()
+        self.stackView = stackView
+        for x in 0..<options.count {
+            let option = options[x]
+            let button = createButton(with: option, tag: x)
+            stackView.addArrangedSubview(button)
+        }
+    }
+
+    private func createButton(
+        with option: RMSearchInputViewViewModel.DynamicOption,
+        tag: Int
+    ) -> UIButton {
+        let button = UIButton()
+        button.setAttributedTitle(
+            NSAttributedString(
+                string: option.rawValue,
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 18, weight: .medium),
+                    .foregroundColor: UIColor.label
+                ]
+            ),
+            for: .normal
+        )
+        button.backgroundColor = .secondarySystemFill
+        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        button.tag = tag
+        button.layer.cornerRadius = 6
+
+        return button
+    }
+
+    @objc
+    private func didTapButton(_ sender: UIButton) {
+        guard let options = viewModel?.options else {
+            return
+        }
+        let tag = sender.tag
+        let selected = options[tag]
+        delegate?.rmSearchInputView(self, didSelectOption: selected)
+    }
+
+    // MARK: - Public
+
+    public func configure(with viewModel: RMSearchInputViewViewModel) {
+        searchBar.placeholder = viewModel.searchPlaceholderText
+        self.viewModel = viewModel
+    }
+
     public func presentKeyboard() {
-        searchInputView.presentKeyboard()
+        searchBar.becomeFirstResponder()
+    }
+
+    public func update(
+        option: RMSearchInputViewViewModel.DynamicOption,
+        value: String
+    ) {
+        // Update options
+        guard let buttons = stackView?.arrangedSubviews as? [UIButton],
+              let allOptions = viewModel?.options,
+              let index = allOptions.firstIndex(of: option) else {
+            return
+        }
+
+        buttons[index].setAttributedTitle(
+            NSAttributedString(
+                string: value.uppercased(),
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 18, weight: .medium),
+                    .foregroundColor: UIColor.link
+                ]
+            ),
+            for: .normal
+        )
     }
 }
 
-// MARK: - CollectionView
+// MARK: - UISearchBarDelegate
 
-extension RMSearchView: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+extension RMSearchInputView: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        // Notify delegate of change text
+        delegate?.rmSearchInputView(self, didChangeSearchText: searchText)
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-
-
-    }
-}
-
-// MARK: - RMSearchInputViewDelegate
-
-extension RMSearchView: RMSearchInputViewDelegate {
-    func rmSearchInputView(_ inputView: RMSearchInputView, didSelectOption option: RMSearchInputViewViewModel.DynamicOption) {
-        delegate?.rmSearchView(self, didSelectOption: option)
-    }
-
-    func rmSearchInputView(_ inputView: RMSearchInputView, didChangeSearchText text: String) {
-        viewModel.set(query: text)
-    }
-
-    func rmSearchInputViewDidTapSearchKeyboardButton(_ inputView: RMSearchInputView) {
-        viewModel.executeSearch()
-    }
-}
-
-// MARK: - RMSearchResultsViewDelegate
-
-extension RMSearchView: RMSearchResultsViewDelegate {
-    func rmSearchResultsView(_ resultsView: RMSearchResultsView, didTapLocationAt index: Int) {
-        guard let locationModel = viewModel.locationSearchResult(at: index) else {
-            return
-        }
-        delegate?.rmSearchView(self, didSelectLocation: locationModel)
-    }
-
-    func rmSearchResultsView(_ resultsView: RMSearchResultsView, didTapEpisodeAt index: Int) {
-        guard let episodeModel = viewModel.episodeSearchResult(at: index) else {
-            return
-        }
-        delegate?.rmSearchView(self, didSelectEpisode: episodeModel)
-    }
-
-    func rmSearchResultsView(_ resultsView: RMSearchResultsView, didTapCharacterAt index: Int) {
-        guard let characterModel = viewModel.characterSearchResult(at: index) else {
-            return
-        }
-        delegate?.rmSearchView(self, didSelectCharacter: characterModel)
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Notify that search button was tapped
+        searchBar.resignFirstResponder()
+        delegate?.rmSearchInputViewDidTapSearchKeyboardButton(self)
     }
 }
